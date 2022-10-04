@@ -18,13 +18,31 @@ for (var i = 0; i < descriptionEls.length; i++) {
     }
 };
 
-// A function to store the content of the description in localStorage
-function storeAgendum(element) {
-    localStorage.setItem(element[0].id, element[0].value)
-}
+// A function to store a saved agendum into local storage
+const saveAgendum = (event) => {
+    var index;
+    if (event.target.classList.value.split(' ').includes('saveBtn')) {
+        index = event.target.dataset.partner
+    } else {
+        index = event.target.parentElement.dataset.partner
+    }
 
-// Add an event listener to the save buttons
-var saveBtns = document.querySelectorAll('.saveBtn');
-for (var i = 0; i < saveBtns.length; i++) {
-    var partnerId = '#' + saveBtns[i].dataset.partner;
-}
+    const inputSelected = document.getElementById(index)
+    localStorage[inputSelected.id] = inputSelected.value
+};
+
+const loadAgenda = () => {
+    for (let i=9; i<18; i++) {
+        if (localStorage[i]) {
+            const inputSelected = document.getElementById(i);
+            inputSelected.value = localStorage[i];
+        }
+    }
+};
+
+const saveBtns = document.querySelectorAll('.saveBtn');
+for (let i=0; i<saveBtns.length; i++) {   
+    saveBtns[i].addEventListener('click', saveAgendum)
+};
+
+loadAgenda();
